@@ -9,10 +9,33 @@ class IngredientSelection extends StatefulWidget {
 }
 
 class _IngredientSelectionState extends State<IngredientSelection> {
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Select Ingredients')),
+      appBar: AppBar(
+        title: Text('Select prefered lunch date'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.calendar_today),
+            onPressed: () => _selectDate(context),
+          ),
+        ],
+      ),
       body: FutureBuilder(
         future: context.read<AppServices>().fetchIngredients(),
         builder: (context, snapshot) {
@@ -28,19 +51,19 @@ class _IngredientSelectionState extends State<IngredientSelection> {
                   itemCount: ingredients.length,
                   itemBuilder: (context, index) {
                     final ingredient = ingredients[index];
-                    if (ingredient.useBy.isAfter(DateTime.now())) {
+                    if (ingredient.useBy.isBefore(selectedDate)) {
                       return ListTile(
                         title: Text(ingredient.title),
                         subtitle: Text('Expired'),
                         enabled: false,
                       );
-                    } else {
+                    }else {
                       return CheckboxListTile(
                         title: Text(ingredient.title),
                         subtitle: Text(ingredient.useBy.toString()),
                         value: ingredient.selected,
                         onChanged: (bool? value) {
-                           recipeProvider.toggleIngredientSelection(index);
+                          recipeProvider.toggleIngredientSelection(index);
                         },
                       );
                     }
@@ -59,7 +82,8 @@ class _IngredientSelectionState extends State<IngredientSelection> {
               .where((ingredient) => ingredient.selected)
               .map((ingredient) => ingredient.title)
               .toList();
-    print('Selected Ingredients: $selectedIngredients'); // Add this line for debugging purposes
+          print(
+              'Selected Ingredients: $selectedIngredients'); // Add this line for debugging purposes
 
           Navigator.push(
             context,
