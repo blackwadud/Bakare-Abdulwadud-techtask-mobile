@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:tech_task/screens/recipe_selection.dart';
 import '../provider/app_services.dart';
 
-
 class IngredientSelection extends StatefulWidget {
   @override
   State<IngredientSelection> createState() => _IngredientSelectionState();
@@ -38,11 +37,10 @@ class _IngredientSelectionState extends State<IngredientSelection> {
                     } else {
                       return CheckboxListTile(
                         title: Text(ingredient.title),
+                        subtitle: Text(ingredient.useBy.toString()),
                         value: ingredient.selected,
                         onChanged: (bool? value) {
-                          setState(() {
-                            ingredient.selected = value!;
-                          });
+                           recipeProvider.toggleIngredientSelection(index);
                         },
                       );
                     }
@@ -61,11 +59,13 @@ class _IngredientSelectionState extends State<IngredientSelection> {
               .where((ingredient) => ingredient.selected)
               .map((ingredient) => ingredient.title)
               .toList();
+    print('Selected Ingredients: $selectedIngredients'); // Add this line for debugging purposes
 
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RecipeListScreen(selectedIngredients: selectedIngredients),
+              builder: (context) =>
+                  RecipeListScreen(selectedIngredients: selectedIngredients),
             ),
           );
         },
@@ -74,4 +74,3 @@ class _IngredientSelectionState extends State<IngredientSelection> {
     );
   }
 }
-

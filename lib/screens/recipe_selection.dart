@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tech_task/provider/app_services.dart';
 
-
 class RecipeListScreen extends StatelessWidget {
   final List<String> selectedIngredients;
 
-  RecipeListScreen({required this.selectedIngredients});
+  RecipeListScreen({required this.selectedIngredients}) {
+    print(
+        'Selected ingredients in RecipeListScreen: $selectedIngredients');
+  }
 
   @override
   Widget build(BuildContext context) {

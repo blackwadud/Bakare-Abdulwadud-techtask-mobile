@@ -4,7 +4,6 @@ import '../models/ingredent.dart';
 import '../models/reciepe.dart';
 import '../services/api_client.dart';
 
-
 class AppServices with ChangeNotifier {
   final ApiClient apiClient;
   List<Ingredient> _ingredients = [];
@@ -21,7 +20,13 @@ class AppServices with ChangeNotifier {
   }
 
   Future<void> fetchRecipes(List<String> selectedIngredients) async {
+     print('Selected ingredients: $selectedIngredients');
     _recipes = await apiClient.fetchRecipes(selectedIngredients);
+    notifyListeners();
+  }
+
+  void toggleIngredientSelection(int index) {
+    ingredients[index].selected = !ingredients[index].selected;
     notifyListeners();
   }
 }
