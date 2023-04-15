@@ -59,6 +59,10 @@ __NOTES : This API is only a mock server to simulate the request and response bo
 ## Submission
 The application should be committed to a `public` repository on `GitHub` or `BitBucket` (`<lastname>-<firstname>-techtask-mobile`) and simply send us a link to the repository.
 
+## Key Notes 
+Upgraded the depreciated android embedded version
+Dependency used are provider for state management and Https for my api calls
+Both api have been consumed and with my unit test discovered that `/recipes?ingredients=<title-1>,<title-n>` would always give the same response irrespective of what data was parsed
 ## Getting Started with Flutter
 
 A few resources to get you started if this is your first Flutter project:
