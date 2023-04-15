@@ -29,7 +29,7 @@ class _IngredientSelectionState extends State<IngredientSelection> {
                   itemCount: ingredients.length,
                   itemBuilder: (context, index) {
                     final ingredient = ingredients[index];
-                    if (ingredient.useBy.isBefore(DateTime.now())) {
+                    if (ingredient.useBy.isAfter(DateTime.now())) {
                       return ListTile(
                         title: Text(ingredient.title),
                         subtitle: Text('Expired'),
